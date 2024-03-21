@@ -52,3 +52,47 @@ a {
   text-decoration: none;
   color: #00b7ff;
 }
+
+.container {
+  padding: 5rem;
+}
+
+.h1 {
+  font-size: 3rem;
+  max-width: 40rem;
+  text-align: center;
+
+  width: 100%;
+  margin: 0 auto 5rem auto;
+}
+
+.messages {
+  display: block;
+  max-width: 40rem;
+  width: 100%;
+  margin: auto;
+}
+
+.message {
+  background-color: #d8d8d8;
+  background-image: linear-gradient(to left, #e4e4e4, #eee);
+  border-radius: 1rem;
+  margin-bottom: 3rem;
+  padding: 2rem 0rem;
+}
+
+.message:last-child {
+  margin-bottom: 0;
+}
+
+.message__title {
+  font-size: 1.5rem;
+
+  margin-bottom: 3rem;
+  padding: 0 2rem;
+}
+
+.message__text {
+  /* font-weight: 600; */
+  padding: 0 4rem;
+}
