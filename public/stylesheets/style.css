@@ -43,7 +43,15 @@ input {
 
 .nav-list {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 2rem;
+}
+
+.nav-user {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .nav-link {
@@ -148,4 +156,19 @@ input {
 
 .b-radius-1 {
   border-radius: 1rem;
+}
+
+.error-list {
+  list-style-type: none;
+  margin: auto;
+  margin-bottom: 3rem;
+  max-width: 40rem;
+  width: 100%;
+
+  text-align: center;
+}
+
+.error-item {
+  padding: 0.5rem;
+  font-size: 1.05rem;
 }
