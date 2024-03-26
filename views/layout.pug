@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title=title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    header 
+
+      nav(class="nav")
+        div(class="nav-content")
+          h1(class="title") Members Club
+          div(class="nav-list")
+            if user
+               span.nav-user Hello #{user.nickname}!
+               a(class="nav-link", href="/logout") Log Out 
+            else 
+              a(class="nav-link", href="/login") Log In 
+              a#sign(class="nav-link",href="/sign-up") Sign Up 
+
+    block content

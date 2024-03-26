@@ -4,6 +4,11 @@ block content
   div(class="container")    
     h1(class="h1") Sign Up New User
 
+    if errors 
+      ul.error-list  
+        for error in errors  
+          li.error-item!= error.msg 
+
     form.form.b-radius-1(method="POST")
       div.form-group
         label.form-label(for="fullname") Full Name

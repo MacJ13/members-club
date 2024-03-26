@@ -7,20 +7,23 @@ const logger = require("morgan");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
+const passport = require("passport");
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-
-const app = express();
-
-require("dotenv").config();
 
 const connectDB = require("./config/database");
 
 connectDB();
 
+const app = express();
+
+require("dotenv").config();
+require("./config/passport");
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+app.set("view engine", "pug");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -29,23 +32,26 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 //  SESSION SETUP
-// const sessionStore = new MongoStore({
-//   url: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@myatlasclusteredu.5v0vras.mongodb.net/members_club?retryWrites=true&w=majority`,
-// });
+const sessionStore = new MongoStore({
+  mongoUrl: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@myatlasclusteredu.5v0vras.mongodb.net/members_club?retryWrites=true&w=majority`,
+});
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@myatlasclusteredu.5v0vras.mongodb.net/members_club?retryWrites=true&w=majority`,
-    }),
+    // store: MongoStore.create({
+    //   mongoUrl: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@myatlasclusteredu.5v0vras.mongodb.net/members_club?retryWrites=true&w=majority`,
+    // }),
+    store: sessionStore,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
     },
   })
 );
+
+app.use(passport.session());
 
 app.use((req, res, next) => {
   console.log(req.session);

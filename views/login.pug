@@ -4,12 +4,22 @@ block content
   div(class="container")    
     h1(class="h1") Login To Members Club
 
+    if errors
+      ul.error-list  
+        for error in errors  
+          li.error-item!= error.msg 
+
+    if messages 
+      ul.error-list  
+        for message in messages
+          li.error-item= message
+
     form.form.b-radius-1(method="POST")
       div.form-group
         label.form-label(for="nickname") Nick Name
         input#fullname.form-control(type="text", name="nickname", value=(undefined===user ? "" : user.nickname))
       div.form-group
         label.form-label(for="password") Password
-        input#fullname.form-control(type="password", name="password", value="")
+        input#password.form-control(type="password", name="password", value="")
       div.form-group
         button.nav-link.form-button(type="submit") Log in
