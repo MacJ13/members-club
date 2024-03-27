@@ -15,9 +15,12 @@ block content
         input#fullname.form-control(type="text", name="fullname", value=(undefined===user ? "" : user.fullname))
       div.form-group
         label.form-label(for="nickname") Nick Name
-        input#fullname.form-control(type="text", name="nickname", value=(undefined===user ? "" : user.nickname))
+        input#nickname.form-control(type="text", name="nickname", value=(undefined===user ? "" : user.nickname))
       div.form-group
         label.form-label(for="password") Password
-        input#fullname.form-control(type="password", name="password", value="")
+        input#password.form-control(type="password", name="password", value="")
+      div.form-group
+        label.form-label(for="confirm") Confirm Password
+        input#confirm.form-control(type="password", name="confirm", value="")
       div.form-group
         button.nav-link.form-button(type="submit") sign up
