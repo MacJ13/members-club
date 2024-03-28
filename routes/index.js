@@ -3,28 +3,6 @@ const router = express.Router();
 
 const user_controller = require("../controllers/userController");
 
-// GET signup page
-// router.get("/sign-up", function (req, res, next) {
-//   if (req.user) {
-//     res.redirect("/");
-//     return;
-//   }
-//   res.render("signup", {
-//     title: "Sign Up",
-//   });
-// });
-
-// GET login page
-// router.get("/login", function (req, res, next) {
-//   if (req.user) {
-//     res.redirect("/");
-//     return;
-//   }
-
-//   // console.log(req.session.messages);
-//   res.render("login", { title: "Log In", messages: req.session.messages });
-// });
-
 /* GET home page. */
 router.get("/", user_controller.index_get);
 
@@ -38,5 +16,7 @@ router.get("/sign-up", user_controller.signup_get);
 router.post("/sign-up", user_controller.signup_post);
 
 router.post("/login", user_controller.login_post);
+
+router.get("/logout", user_controller.logout_get);
 
 module.exports = router;
