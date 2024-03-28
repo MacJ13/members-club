@@ -31,4 +31,7 @@ router.get("/", user_controller.index_get);
 // GET login page
 router.get("/login", user_controller.login_get);
 
+// GET signup page
+router.get("/sign-up", user_controller.signup_get);
+
 module.exports = router;

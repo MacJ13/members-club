@@ -24,3 +24,13 @@ exports.login_get = (req, res, next) => {
 
   res.render("login", { title: "Log In", messages: req.session.messages });
 };
+
+exports.signup_get = (req, res, next) => {
+  if (req.user) {
+    res.redirect("/");
+    return;
+  }
+  res.render("signup", {
+    title: "Sign Up",
+  });
+};
