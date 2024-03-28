@@ -15,3 +15,12 @@ exports.index_get = (req, res, next) => {
 
   res.render("index", { title: "Home page", user: req.user, logged: logged });
 };
+
+exports.login_get = (req, res, next) => {
+  if (req.user) {
+    res.redirect("/");
+    return;
+  }
+
+  res.render("login", { title: "Log In", messages: req.session.messages });
+};

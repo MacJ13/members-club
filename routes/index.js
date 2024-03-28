@@ -28,4 +28,7 @@ const user_controller = require("../controllers/userController");
 /* GET home page. */
 router.get("/", user_controller.index_get);
 
+// GET login page
+router.get("/login", user_controller.login_get);
+
 module.exports = router;
