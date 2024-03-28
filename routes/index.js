@@ -37,4 +37,6 @@ router.get("/sign-up", user_controller.signup_get);
 // POST signup
 router.post("/sign-up", user_controller.signup_post);
 
+router.post("/login", user_controller.login_post);
+
 module.exports = router;

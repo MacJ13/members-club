@@ -9,10 +9,7 @@ const saltRounds = 10;
 
 // display index home
 exports.index_get = (req, res, next) => {
-  //   console.log("user in index ", req.user);
-
   const logged = Boolean(req.user);
-
   res.render("index", { title: "Home page", user: req.user, logged: logged });
 };
 
@@ -98,32 +95,47 @@ exports.signup_post = [
       await newUser.save();
       res.redirect("/login");
     }
-    // bcrypt.hash(
-    //   req.body.password,
-    //   saltRounds,
-    //   async function (err, hashPassword) {
-    //     if (err) {
-    //       next(err);
-    //     }
+  }),
+];
 
-    //     const newUser = new User({
-    //       fullname: req.body.fullname,
-    //       nickname: req.body.nickname,
-    //       password: hashPassword,
-    //     });
+exports.login_post = [
+  body("nickname")
+    .trim()
+    .notEmpty()
+    .withMessage("Nick name must not be empty")
+    .isLength({ min: 3 })
+    .withMessage("Nick name must contain at least 3 characters")
+    .escape(),
+  body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password must not be empty")
+    .isLength({ min: 5 })
+    .withMessage("Password must contain at least 5 characters"),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
 
-    //     if (!errors.isEmpty()) {
-    //       res.render("signup", {
-    //         title: "Sign up",
-    //         user: newUser,
-    //         errors: errors.array(),
-    //       });
-    //       return;
-    //     } else {
-    //       await newUser.save();
-    //       res.redirect("/login");
-    //     }
-    //   }
-    // );
+    const user = new User({
+      fullname: req.body.fullname,
+      nickname: req.body.nickname,
+      password: req.body.password,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("login", {
+        title: "Log in",
+        logged: null,
+        user: user,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      next();
+    }
+  }),
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureMessage: true,
   }),
 ];
