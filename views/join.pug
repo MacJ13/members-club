@@ -1,0 +1,20 @@
+extends layout 
+
+block content 
+  div(class="container")    
+    h1(class="h1") Join the Club 
+
+    if errors
+      ul.error-list  
+        for error in errors  
+          li.error-item!= error.msg 
+
+
+    form.form.b-radius-1(method="POST")
+      div.form-group
+        input#fullname.form-control(type="hidden", name="nickname", value=user.nickname)
+      div.form-group
+        label.form-label(for="secret") Secret Key
+        input#password.form-control(type="password", name="secret", value="")
+      div.form-group
+        button.nav-link.form-button(type="submit") Join
