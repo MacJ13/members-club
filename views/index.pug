@@ -5,8 +5,16 @@ block content
 
     if user
       h1(class="h1") Nice to see you #{user.nickname} today!
+      div.list
+        div.member-link
+          a.nav-link(href=user.url + "/message/create") create new message
+        if !user.membership_status
+          div.member-link
+            a.nav-link#sign(href=user.url+"/join") join the club
     else   
       h1(class="h1") To see more you have to logged in.
+
+      
     //- p Welcome to #{title}
     div.messages.b-radius-1
       div(class="message")
