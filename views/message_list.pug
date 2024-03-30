@@ -1,0 +1,26 @@
+extends layout 
+
+block content 
+  div(class="container")
+
+    h1.h1 #{user.nickname}'s message list
+    
+    if messages.length
+      div.messages.b-radious-1
+        for message in messages 
+          div.message
+            h3.message__title=message.title 
+            p.message_text=message.text
+    else   
+      div.nomessages There is no messages.
+
+    //- div.messages.b-radius-1
+    //-   div(class="message")
+    //-     h3(class="message__title") Title message #1
+    //-     p(class="message__text") Example text of this message ksdlg ksdlg ksdglk sldgk lsdkglgd 
+    //-   div(class="message")
+    //-     h3(class="message__title") Title message #1
+    //-     p(class="message__text") Example text of this message ksdlg ksdlg ksdglk sldgk lsdkglgd 
+    //-   div(class="message")
+    //-     h3(class="message__title") Title message #1
+    //-     p(class="message__text") Example text of this message ksdlg ksdlg ksdglk sldgk lsdkglgd 
