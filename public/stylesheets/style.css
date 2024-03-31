@@ -92,11 +92,16 @@ textarea {
 }
 
 .message {
+  margin-bottom: 3rem;
+}
+
+.message__content {
   background-color: #d8d8d8;
   background-image: linear-gradient(to left, #e4e4e4, #eee);
   border-radius: 1rem;
-  margin-bottom: 3rem;
+
   padding: 2rem 0rem;
+  margin-bottom: 0.5rem;
 }
 
 .message:last-child {
