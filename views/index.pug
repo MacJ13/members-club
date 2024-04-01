@@ -18,18 +18,12 @@ block content
     else   
       h1(class="h1") To see more you have to logged in.
 
-      
-    //- p Welcome to #{title}
-    div.messages.b-radius-1
-      div(class="message")
-        div(class="message__content")
-          h3(class="message__title") Title message #1
-          p(class="message__text") Example text of this message ksdlg ksdlg ksdglk sldgk lsdkglgd 
-      div(class="message")
-        div(class="message__content")
-          h3(class="message__title") Title message #1
-          p(class="message__text") Example text of this message ksdlg ksdlg ksdglk sldgk lsdkglgd
-      div(class="message")
-        div(class="message__content")
-          h3(class="message__title") Title message #1
-          p(class="message__text") Example text of this message ksdlg ksdlg ksdglk sldgk lsdkglgd  
+    if messages.length
+      div.messages.b-radious-1
+        for message in messages 
+          div.message
+            div.message__content
+              h3.message__title=message.title 
+              p.message__text=message.text
+    else   
+      div.nomessages There is no messages.
