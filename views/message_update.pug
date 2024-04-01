@@ -1,0 +1,20 @@
+extends layout 
+
+block content 
+  div.container 
+    h1.h1 Update the Message
+
+    if errors 
+      ul.error-list 
+        for error in errors 
+          li.error-item!= error.msg 
+
+    form.form.b-radius-1(method="POST")
+      div.form-group
+        label.form-label(for="title") Title
+        input#title.form-control(type="text", name="title", value=(undefined===message ? "" : message.title))
+      div.form-group
+        label.form-label(for="text") Text
+        textarea#text.form-textarea(type="text", name="text") #{undefined===message ? "" : message.text}
+      div.form-group
+        button.nav-link.form-button(type="submit") Update Message
