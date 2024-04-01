@@ -221,3 +221,20 @@ textarea {
   font-weight: 400;
   text-align: center;
 }
+
+.message__controls {
+  padding: 0.25rem;
+  display: flex;
+  gap: 1rem;
+  /* margin-left: auto; */
+  width: 100%;
+}
+
+.message__link {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.delete {
+  color: #ef4444;
+}

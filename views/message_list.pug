@@ -12,9 +12,9 @@ block content
             div.message__content
               h3.message__title=message.title 
               p.message__text=message.text
-            div.message_controls
-              a.message__link Update 
-              a.message__link Delete
+            div.message__controls
+              a.message__link.update(href=user.url + message.url + "/update") Update 
+              a.message__link.delete Delete
     else   
       div.nomessages There is no messages.
 
