@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Message = require("../models/message");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const passport = require("passport");
@@ -7,15 +8,9 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
-// display index home
-exports.index_get = (req, res, next) => {
-  const logged = Boolean(req.user);
-  res.render("index", { title: "Home page", user: req.user, logged: logged });
-};
-
 exports.login_get = (req, res, next) => {
   if (req.user) {
-    res.redirect("/");
+    res.redirect(req.user.url);
     return;
   }
 
@@ -134,10 +129,13 @@ exports.login_post = [
     }
   }),
   passport.authenticate("local", {
-    successRedirect: "/",
+    // successRedirect: "/",
     failureRedirect: "/login",
     failureMessage: true,
   }),
+  (req, res, next) => {
+    res.redirect(req.user.url);
+  },
 ];
 
 exports.logout_get = (req, res, next) => {
