@@ -199,3 +199,42 @@ exports.user_memberclub_get = (req, res, next) => {
     logged: logged,
   });
 };
+
+exports.user_memberclub_post = [
+  body("secret")
+    .trim()
+    .notEmpty()
+    .withMessage("Secret key must not be empty")
+    .isLength({ min: 5 })
+    .withMessage("Secret key must contain at least 5 characters")
+    .escape()
+    .custom((value) => {
+      if (process.env.CLUB_SECRET !== value) {
+        throw new Error();
+      }
+      return true;
+    })
+    .withMessage("Value does not match secret key")
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render("join", {
+        title: "Join the club",
+        user: req.user,
+        logged: true,
+        errors: errors.array(),
+      });
+    } else {
+      const user = await User.findOne({ nickname: req.body.nickname }).exec();
+      console.log(user);
+
+      user.membership_status = true;
+
+      await user.save();
+
+      res.redirect(user.url);
+    }
+  }),
+];
