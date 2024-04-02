@@ -7,6 +7,8 @@ const message_controller = require("../controllers/messageController");
 const user_contorller = require("../controllers/userController");
 require("dotenv").config();
 
+router.get("/:id/message/all", message_controller.message_list);
+
 router.get("/:id/join", user_contorller.user_memberclub_get);
 
 router.post("/:id/join", user_contorller.user_memberclub_post);
