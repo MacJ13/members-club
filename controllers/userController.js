@@ -178,3 +178,24 @@ exports.user_index = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
+exports.user_memberclub_get = (req, res, next) => {
+  const logged = Boolean(req.user);
+
+  if (!logged) {
+    res.redirect("/");
+    return;
+  }
+
+  const member = req.user.membership_status;
+  if (member) {
+    res.redirect(req.user.url);
+    return;
+  }
+
+  res.render("join", {
+    title: "Join the club",
+    user: req.user,
+    logged: logged,
+  });
+};
