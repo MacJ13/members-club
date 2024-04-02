@@ -8,6 +8,23 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
+// display index home
+exports.index_get = asyncHandler(async (req, res, next) => {
+  const logged = Boolean(req.user);
+
+  const messages = await Message.find().sort({ timeStamp: -1 }).exec();
+
+  if (logged) {
+    res.redirect(req.user.url);
+  } else {
+    res.render("index", {
+      title: "Home page",
+      logged: logged,
+      messages: messages,
+    });
+  }
+});
+
 exports.login_get = (req, res, next) => {
   if (req.user) {
     res.redirect(req.user.url);
@@ -145,3 +162,19 @@ exports.logout_get = (req, res, next) => {
     res.redirect("/");
   });
 };
+
+exports.user_index = asyncHandler(async (req, res, next) => {
+  const logged = Boolean(req.user);
+
+  if (!logged) {
+    res.redirect("/");
+  } else {
+    const messages = await Message.find().sort({ timeStamp: -1 }).exec();
+    res.render("index", {
+      title: "Home page",
+      user: req.user,
+      logged: logged,
+      messages: messages,
+    });
+  }
+});
