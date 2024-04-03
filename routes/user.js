@@ -17,6 +17,11 @@ router.get("/:id/message/create", message_controller.message_create_get);
 
 router.post("/:id/message/create", message_controller.message_create_post);
 
+router.get(
+  "/:id/message/:messageId/update",
+  message_controller.message_update_get
+);
+
 /* GET users listing. */
 router.get("/:id", user_contorller.user_index);
 

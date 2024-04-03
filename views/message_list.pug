@@ -14,7 +14,7 @@ block content
               p.message__text=message.text
             div.message__controls
               a.message__link.update(href=user.url + message.url + "/update") Update 
-              a.message__link.delete Delete
+              a.message__link.delete(href=user.url + message.url + "/delete") Delete
     else   
       div.nomessages There is no messages.
 
