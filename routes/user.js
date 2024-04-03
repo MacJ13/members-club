@@ -22,6 +22,11 @@ router.get(
   message_controller.message_update_get
 );
 
+router.post(
+  "/:id/message/:messageId/update",
+  message_controller.message_update_post
+);
+
 /* GET users listing. */
 router.get("/:id", user_contorller.user_index);
 
