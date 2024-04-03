@@ -27,6 +27,11 @@ router.post(
   message_controller.message_update_post
 );
 
+router.get(
+  "/:id/message/:messageId/delete",
+  message_controller.message_delete_get
+);
+
 /* GET users listing. */
 router.get("/:id", user_contorller.user_index);
 

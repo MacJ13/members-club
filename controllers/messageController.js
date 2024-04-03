@@ -148,3 +148,22 @@ exports.message_update_post = [
     }
   }),
 ];
+
+exports.message_delete_get = asyncHandler(async (req, res, next) => {
+  const logged = Boolean(req.user);
+
+  const message = await Message.findById(req.params.messageId)
+    .sort({ timeStamp: -1 })
+    .exec();
+
+  if (!message) {
+    return next(new Error("message not found"));
+  }
+
+  res.render("message_delete", {
+    title: "Delete Message",
+    logged: logged,
+    user: req.user,
+    message: message,
+  });
+});
