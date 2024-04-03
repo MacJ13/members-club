@@ -15,6 +15,8 @@ router.post("/:id/join", user_contorller.user_memberclub_post);
 
 router.get("/:id/message/create", message_controller.message_create_get);
 
+router.post("/:id/message/create", message_controller.message_create_post);
+
 /* GET users listing. */
 router.get("/:id", user_contorller.user_index);
 
