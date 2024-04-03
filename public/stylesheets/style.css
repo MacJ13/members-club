@@ -238,3 +238,10 @@ textarea {
 .delete {
   color: #ef4444;
 }
+
+.form-group-delete {
+  align-items: center;
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+}

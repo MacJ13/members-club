@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+  div.container 
+    h1.h1 Do you want to the delete message?
+    form(method="POST")
+    
+      input#messageid.form-control(type='hidden', name='messageid', value=message._id )
+           
+      div.form-group-delete
+        button.nav-link.form-button(type="submit") Yes 
+        a.nav-link(href=user.url + "/message/all") No 
