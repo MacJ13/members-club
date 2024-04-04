@@ -102,6 +102,7 @@ textarea {
 
   padding: 2rem 0rem;
   margin-bottom: 0.5rem;
+  position: relative;
 }
 
 .message:last-child {
@@ -233,6 +234,24 @@ textarea {
 .message__link {
   font-size: 1.05rem;
   font-weight: 600;
+}
+
+.message__details {
+  position: absolute;
+  bottom: 1rem;
+  right: -1rem;
+  padding: 0 2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message__timestamp {
+  font-size: 0.8rem;
+}
+.message__author {
+  font-style: italic;
 }
 
 .delete {
