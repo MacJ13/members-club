@@ -25,5 +25,11 @@ block content
             div.message__content
               h3.message__title=message.title 
               p.message__text=message.text
+              if user
+                if user.membership_status
+                  div.message__details
+                    span.message__author Created: by #[strong=message.user.nickname]
+                    span.message__timestamp=message.timeStamp.toLocaleString()
+                 
     else   
       div.nomessages There is no messages.
