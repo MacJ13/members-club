@@ -12,13 +12,36 @@ const saltRounds = 10;
 exports.index_get = asyncHandler(async (req, res, next) => {
   const logged = Boolean(req.user);
 
-  const messages = await Message.find().sort({ timeStamp: -1 }).exec();
-
   if (logged) {
     res.redirect(req.user.url);
   } else {
+    const messages = await Message.find()
+      .sort({ timeStamp: -1 })
+      .populate("user", "nickname")
+      .exec();
+
     res.render("index", {
       title: "Home page",
+      logged: logged,
+      messages: messages,
+    });
+  }
+});
+
+exports.user_index = asyncHandler(async (req, res, next) => {
+  const logged = Boolean(req.user);
+
+  if (!logged) {
+    res.redirect("/");
+  } else {
+    const messages = await Message.find()
+      .sort({ timeStamp: -1 })
+      .populate("user", "nickname")
+      .exec();
+
+    res.render("index", {
+      title: "Home page",
+      user: req.user,
       logged: logged,
       messages: messages,
     });
@@ -162,22 +185,6 @@ exports.logout_get = (req, res, next) => {
     res.redirect("/");
   });
 };
-
-exports.user_index = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
-
-  if (!logged) {
-    res.redirect("/");
-  } else {
-    const messages = await Message.find().sort({ timeStamp: -1 }).exec();
-    res.render("index", {
-      title: "Home page",
-      user: req.user,
-      logged: logged,
-      messages: messages,
-    });
-  }
-});
 
 exports.user_memberclub_get = (req, res, next) => {
   const logged = Boolean(req.user);
