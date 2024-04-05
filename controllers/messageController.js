@@ -171,7 +171,10 @@ exports.message_delete_get = asyncHandler(async (req, res, next) => {
 exports.message_delete_post = asyncHandler(async (req, res, next) => {
   const mes = await Message.deleteOne({ _id: req.body.messageid }).exec();
 
-  console.log(mes);
-
-  res.redirect(req.user.url + "/message/all");
+  if (req.user.admin) {
+    res.redirect(req.user.url);
+    return;
+  } else {
+    res.redirect(req.user.url + "/message/all");
+  }
 });
