@@ -2,6 +2,8 @@ extends layout
 
 block content 
   div.container 
+    a.link__back(href=user.url + "message/all") #[span.link__arrow &#8592;] Go back 
+
     h1.h1 Update the Message
 
     if errors 

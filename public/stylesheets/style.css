@@ -264,3 +264,28 @@ textarea {
   gap: 2.5rem;
   justify-content: center;
 }
+
+.link__back {
+  background-color: #00b7ff;
+  border-radius: 1rem;
+  color: #fff;
+  font-size: 1.25rem;
+
+  padding: 0.66rem 1.5rem;
+
+  display: flex;
+  gap: 0.5rem;
+
+  width: 10rem;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 3rem;
+}
+
+.link__arrow {
+  font-size: 1.75rem;
+  position: relative;
+  top: -2px;
+}

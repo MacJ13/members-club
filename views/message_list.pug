@@ -2,8 +2,10 @@ extends layout
 
 block content 
   div(class="container")
+    a.link__back(href=user.url) #[span.link__arrow &#8592;] Go back 
 
     h1.h1 #{user.nickname}'s message list
+      
     
     if messages.length
       div.messages.b-radious-1
