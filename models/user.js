@@ -7,6 +7,7 @@ const userSchema = new Schema({
   nickname: { type: String, required: true, minLength: 3 },
   password: { type: String, required: true },
   membership_status: { type: Boolean, default: false },
+  admin: { type: Boolean, default: false },
   messages: [{ type: Schema.Types.ObjectId, ref: "message" }],
 });
 

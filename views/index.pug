@@ -6,7 +6,7 @@ block content
     if user
       h1(class="h1") Nice to see you #{user.nickname} today!
       div.message-list-link
-        a(href=user.url + "/message/all") go to my messages
+        a.nav-link(href=user.url + "/message/all") go to my messages
       div.list
         div.member-link
           a.nav-link(href=user.url + "/message/create") create new message
@@ -30,6 +30,9 @@ block content
                   div.message__details
                     span.message__author Created: by #[strong=message.user.nickname]
                     span.message__timestamp=message.timeStamp.toLocaleString()
-                 
+            if user 
+              if user.admin 
+                div.message__controls 
+                  a.message__link.delete(href=user.url + message.url +"/delete") Delete Message
     else   
       div.nomessages There is no messages.

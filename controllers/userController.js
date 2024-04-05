@@ -8,6 +8,8 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
+require("dotenv").config();
+
 // display index home
 exports.index_get = asyncHandler(async (req, res, next) => {
   const logged = Boolean(req.user);
@@ -59,7 +61,7 @@ exports.login_get = (req, res, next) => {
 
 exports.signup_get = (req, res, next) => {
   if (req.user) {
-    res.redirect("/");
+    res.redirect(req.user);
     return;
   }
   res.render("signup", {
@@ -107,15 +109,35 @@ exports.signup_post = [
       return true;
     })
     .withMessage("password and confirm password are not equal"),
+  body("admin")
+    .trim()
+    .escape()
+    .custom((value) => {
+      if (value === "") {
+        return true;
+      }
+
+      if (process.env.ADMIN_SECRET !== value) {
+        throw new Error();
+      }
+
+      return true;
+    })
+    .withMessage("Value does not match secret key"),
+
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
     const hashPassword = bcrypt.hashSync(req.body.password, saltRounds);
 
+    const admin = Boolean(req.body.admin);
+
     const newUser = new User({
       fullname: req.body.fullname,
       nickname: req.body.nickname,
       password: hashPassword,
+      admin: admin,
+      membership_status: admin,
     });
 
     if (!errors.isEmpty()) {
@@ -149,6 +171,8 @@ exports.login_post = [
     .withMessage("Password must contain at least 5 characters"),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+
+    req.session.messages = [];
 
     const user = new User({
       fullname: req.body.fullname,
