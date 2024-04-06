@@ -279,3 +279,53 @@ exports.user_profile_get = asyncHandler(async (req, res, next) => {
     logged: logged,
   });
 });
+
+exports.user_update_names = [
+  body("fullname")
+    .trim()
+    .toLowerCase()
+    .notEmpty()
+    .withMessage("Full name must not be empty")
+    .isLength({ min: 6 })
+    .withMessage("Full name must contain at least 6 characters")
+    .escape(),
+  body("nickname")
+    .trim()
+    .notEmpty()
+    .withMessage("Nick name must not be empty")
+    .isLength({ min: 3 })
+    .withMessage("Nick name must contain at least 3 characters")
+    .escape()
+    .custom(async (value) => {
+      const nicknameExists = await User.findOne({ nickname: value }).exec();
+
+      if (nicknameExists.nickname.toLowerCase() === value.toLowerCase())
+        return true;
+
+      if (nicknameExists) {
+        return Promise.reject(`Nickname - ${value} - already in use`);
+      }
+    }),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render("profile", {
+        title: "User Profile",
+        errors: errors.array(),
+        user: req.user,
+        logged: Boolean(req.user),
+      });
+      return;
+    } else {
+      const user = await User.findById(req.params.id).exec();
+
+      user.fullname = req.body.fullname;
+      user.nickname = req.body.nickname;
+
+      await user.save();
+
+      res.redirect(req.user.url + "/profile");
+    }
+  }),
+];

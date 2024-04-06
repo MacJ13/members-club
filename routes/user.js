@@ -7,6 +7,8 @@ require("dotenv").config();
 
 router.get("/:id/profile", user_contorller.user_profile_get);
 
+router.post("/:id/profile/names", user_contorller.user_update_names);
+
 router.get("/:id/message/all", message_controller.message_list);
 
 router.get("/:id/join", user_contorller.user_memberclub_get);
