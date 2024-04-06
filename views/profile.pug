@@ -1,0 +1,42 @@
+extends layout 
+
+block content
+  
+  
+  div(class="container")
+    a.link__back(href=user.url) #[span.link__arrow &#8592;] Go back 
+    h1(class="h1") #{user.nickname}'s profile
+
+    if errors 
+      ul.error-list  
+        for error in errors  
+          li.error-item!= error.msg
+  
+    form.form.b-radius-1(method="POST", action=user.url+"/profile/names")
+      div.form-group
+        label.form-label(for="fullname") Change Full Name
+        input#fullname.form-control(type="text", name="fullname", value=(undefined===user ? "" : user.fullname))
+      div.form-group
+        label.form-label(for="nickname") Change Nick Name
+        input#nickname.form-control(type="text", name="nickname", value=(undefined===user ? "" : user.nickname))
+      div.form-group
+        button.nav-link.form-button(type="submit") change
+  
+    form.form.b-radius-1(method="POST",  action=user.url+"/profile/password")
+      div.form-group
+        label.form-label(for="password")  Change Password
+        input#password.form-control(type="password", name="password", value="")
+      div.form-group
+        label.form-label(for="confirm") Confirm Password
+        input#confirm.form-control(type="password", name="confirm", value="")
+      div.form-group
+        button.nav-link.form-button(type="submit") change
+
+    if !user.admin
+      form.form.b-radius-1(method="POST",  action=user.url+"/profile/admin")
+        div.form-group
+          label.form-label(for="password")  Add Admin
+          input#admin.form-control(type="password", name="admin", value="")
+    
+        div.form-group
+          button.nav-link.form-button(type="submit") add
