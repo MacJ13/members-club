@@ -383,3 +383,43 @@ exports.user_update_password = [
     }
   }),
 ];
+
+exports.user_add_admin = [
+  body("admin")
+    .trim()
+    .escape()
+    .notEmpty()
+    .withMessage("Admin secret code must not be empty")
+    .custom((value) => {
+      if (process.env.ADMIN_SECRET !== value) {
+        throw new Error();
+      }
+      return true;
+    })
+    .withMessage("Value does not match secret key")
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render("profile", {
+        title: "User Profile",
+        errors: errors.array(),
+        user: req.user,
+        logged: Boolean(req.user),
+      });
+      return;
+    } else {
+      const admin = Boolean(req.body.admin);
+
+      const user = await User.findById(req.params.id).exec();
+
+      user.admin = admin;
+      user.membership_status = admin;
+
+      await user.save();
+
+      res.redirect(req.user.url + "/profile");
+    }
+  }),
+];

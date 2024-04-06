@@ -11,6 +11,8 @@ router.post("/:id/profile/names", user_contorller.user_update_names);
 
 router.post("/:id/profile/password", user_contorller.user_update_password);
 
+router.post("/:id/profile/admin", user_contorller.user_add_admin);
+
 router.get("/:id/message/all", message_controller.message_list);
 
 router.get("/:id/join", user_contorller.user_memberclub_get);
