@@ -329,3 +329,57 @@ exports.user_update_names = [
     }
   }),
 ];
+
+exports.user_update_password = [
+  body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("password must not be empty")
+    .isLength({ min: 5 })
+    .withMessage("Password must contain at least 5 characters")
+    .custom(async (value, { req }) => {
+      const match = await bcrypt.compare(value, req.user.password);
+
+      if (match) {
+        throw new Error();
+      }
+
+      return true;
+    })
+    .withMessage("password is the same as previous")
+    .escape(),
+  body("confirm")
+    .trim()
+    .escape()
+    .custom((value, { req }) => {
+      if (req.body.password !== value) {
+        throw new Error();
+      }
+
+      return true;
+    })
+    .withMessage("password and confirm are not equal"),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render("profile", {
+        title: "User Profile",
+        errors: errors.array(),
+        user: req.user,
+        logged: Boolean(req.user),
+      });
+      return;
+    } else {
+      const hashPassword = bcrypt.hashSync(req.body.password, saltRounds);
+
+      const user = await User.findById(req.params.id).exec();
+
+      user.password = hashPassword;
+
+      await user.save();
+
+      res.redirect(req.user.url + "/profile");
+    }
+  }),
+];
