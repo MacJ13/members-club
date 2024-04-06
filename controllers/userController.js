@@ -269,3 +269,13 @@ exports.user_memberclub_post = [
     }
   }),
 ];
+
+exports.user_profile_get = asyncHandler(async (req, res, next) => {
+  const logged = Boolean(req.user);
+
+  res.render("profile", {
+    title: "User Profile",
+    user: req.user,
+    logged: logged,
+  });
+});
