@@ -1,3 +1,5 @@
+// const URL = require("url");
+
 const Message = require("../models/message");
 const User = require("../models/user");
 
@@ -72,11 +74,17 @@ exports.message_create_post = [
       await message.save();
 
       res.redirect(req.user.url + "/message/all");
+      // const user = await User.findById(req.params.id).exec();
+
+      // console.log("user => ", user);
+      // res.send("create message!");
     }
   }),
 ];
 
 exports.message_update_get = asyncHandler(async (req, res, next) => {
+  // const logged = Boolean(req.user);
+
   const message = await Message.findById(req.params.messageId).exec();
 
   if (!message) {
@@ -142,9 +150,10 @@ exports.message_update_post = [
 ];
 
 exports.message_delete_get = asyncHandler(async (req, res, next) => {
-  const message = await Message.findById(req.params.messageId)
-    .sort({ timeStamp: -1 })
-    .exec();
+  const backURL = req.header("Referer") || "/";
+  const url = new URL(backURL);
+
+  const message = await Message.findById(req.params.messageId).exec();
 
   if (!message) {
     return next(new Error("message not found"));
@@ -155,6 +164,7 @@ exports.message_delete_get = asyncHandler(async (req, res, next) => {
     logged: req.loggedUser,
     user: req.user,
     message: message,
+    previousPathname: url.pathname,
   });
 });
 
