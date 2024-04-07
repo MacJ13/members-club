@@ -5,6 +5,8 @@ const message_controller = require("../controllers/messageController");
 const user_contorller = require("../controllers/userController");
 require("dotenv").config();
 
+router.get("/:id/profile/delete", user_contorller.user_delete_get);
+
 router.get("/:id/profile", user_contorller.user_profile_get);
 
 router.post("/:id/profile/names", user_contorller.user_update_names);

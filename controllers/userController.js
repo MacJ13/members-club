@@ -426,3 +426,15 @@ exports.user_add_admin = [
     }
   }),
 ];
+
+exports.user_delete_get = asyncHandler(async (req, res, next) => {
+  const backURL = req.header("Referer") || "/";
+  const url = new URL(backURL);
+
+  res.render("user_delete", {
+    title: "Delete User",
+    user: req.user,
+    logged: req.loggedUser,
+    previousPathname: url.pathname,
+  });
+});
