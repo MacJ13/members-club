@@ -5,9 +5,9 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
 exports.message_list = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
+  // const logged = Boolean(req.user);
 
-  if (!logged) {
+  if (!req.user) {
     res.redirect("/");
     return;
   }
@@ -16,16 +16,16 @@ exports.message_list = asyncHandler(async (req, res, next) => {
   res.render("message_list", {
     title: "Message List",
     user: req.user,
-    logged: logged,
+    logged: req.loggedUser,
     messages: messagesByUser,
   });
 });
 
 exports.message_create_get = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
+  // const logged = Boolean(req.user);
   res.render("message_create", {
     title: "Create Message",
-    logged: logged,
+    logged: req.loggedUser,
     user: req.user,
   });
 });
@@ -48,7 +48,7 @@ exports.message_create_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const logged = Boolean(req.user);
+    // const logged = Boolean(req.user);
 
     const message = new Message({
       title: req.body.title,
@@ -63,7 +63,7 @@ exports.message_create_post = [
         res.render("message_create", {
           title: "Create Message",
           message: message,
-          logged: logged,
+          logged: req.loggedUser,
           errors: errors.array(),
         })
       );
@@ -72,17 +72,11 @@ exports.message_create_post = [
       await message.save();
 
       res.redirect(req.user.url + "/message/all");
-      // const user = await User.findById(req.params.id).exec();
-
-      // console.log("user => ", user);
-      // res.send("create message!");
     }
   }),
 ];
 
 exports.message_update_get = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
-
   const message = await Message.findById(req.params.messageId).exec();
 
   if (!message) {
@@ -91,7 +85,7 @@ exports.message_update_get = asyncHandler(async (req, res, next) => {
 
   res.render("message_update", {
     title: "Update Message",
-    logged: logged,
+    logged: req.loggedUser,
     user: req.user,
     message: message,
   });
@@ -115,8 +109,6 @@ exports.message_update_post = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const logged = Boolean(req.user);
-
     const message = new Message({
       title: req.body.title,
       text: req.body.text,
@@ -131,7 +123,7 @@ exports.message_update_post = [
         res.render("message_create", {
           title: "Create Message",
           message: message,
-          logged: logged,
+          logged: req.loggedUser,
           errors: errors.array(),
         })
       );
@@ -150,8 +142,6 @@ exports.message_update_post = [
 ];
 
 exports.message_delete_get = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
-
   const message = await Message.findById(req.params.messageId)
     .sort({ timeStamp: -1 })
     .exec();
@@ -162,14 +152,14 @@ exports.message_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("message_delete", {
     title: "Delete Message",
-    logged: logged,
+    logged: req.loggedUser,
     user: req.user,
     message: message,
   });
 });
 
 exports.message_delete_post = asyncHandler(async (req, res, next) => {
-  const mes = await Message.deleteOne({ _id: req.body.messageid }).exec();
+  await Message.deleteOne({ _id: req.body.messageid }).exec();
 
   if (req.user.admin) {
     res.redirect(req.user.url);

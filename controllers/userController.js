@@ -12,9 +12,11 @@ require("dotenv").config();
 
 // display index home
 exports.index_get = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
+  // const logged = Boolean(req.user);
 
-  if (logged) {
+  // console.log(req.logged);
+
+  if (req.user) {
     res.redirect(req.user.url);
   } else {
     const messages = await Message.find()
@@ -24,16 +26,18 @@ exports.index_get = asyncHandler(async (req, res, next) => {
 
     res.render("index", {
       title: "Home page",
-      logged: logged,
+      logged: req.loggedUser,
       messages: messages,
     });
   }
 });
 
 exports.user_index = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
+  // const logged = Boolean(req.user);
 
-  if (!logged) {
+  // console.log(req.logged);
+
+  if (!req.user) {
     res.redirect("/");
   } else {
     const messages = await Message.find()
@@ -44,7 +48,7 @@ exports.user_index = asyncHandler(async (req, res, next) => {
     res.render("index", {
       title: "Home page",
       user: req.user,
-      logged: logged,
+      logged: req.loggedUser,
       messages: messages,
     });
   }
@@ -130,7 +134,7 @@ exports.signup_post = [
 
     const hashPassword = bcrypt.hashSync(req.body.password, saltRounds);
 
-    const admin = Boolean(req.body.admin);
+    const admin = Boolean(req.body.admin === process.env.ADMIN_SECRET);
 
     const newUser = new User({
       fullname: req.body.fullname,
@@ -144,7 +148,7 @@ exports.signup_post = [
       res.render("signup", {
         title: "Sign up",
         user: newUser,
-        logged: null,
+        logged: req.loggedUser,
         errors: errors.array(),
       });
       return;
@@ -211,9 +215,9 @@ exports.logout_get = (req, res, next) => {
 };
 
 exports.user_memberclub_get = (req, res, next) => {
-  const logged = Boolean(req.user);
+  // const logged = Boolean(req.user);
 
-  if (!logged) {
+  if (!req.user) {
     res.redirect("/");
     return;
   }
@@ -227,7 +231,7 @@ exports.user_memberclub_get = (req, res, next) => {
   res.render("join", {
     title: "Join the club",
     user: req.user,
-    logged: logged,
+    logged: req.loggedUser,
   });
 };
 
@@ -254,12 +258,11 @@ exports.user_memberclub_post = [
       res.render("join", {
         title: "Join the club",
         user: req.user,
-        logged: true,
+        logged: req.loggedUser,
         errors: errors.array(),
       });
     } else {
       const user = await User.findOne({ nickname: req.body.nickname }).exec();
-      console.log(user);
 
       user.membership_status = true;
 
@@ -271,12 +274,12 @@ exports.user_memberclub_post = [
 ];
 
 exports.user_profile_get = asyncHandler(async (req, res, next) => {
-  const logged = Boolean(req.user);
+  // const logged = Boolean(req.user);
 
   res.render("profile", {
     title: "User Profile",
     user: req.user,
-    logged: logged,
+    logged: req.loggedUser,
   });
 });
 
@@ -314,7 +317,7 @@ exports.user_update_names = [
         title: "User Profile",
         errors: errors.array(),
         user: req.user,
-        logged: Boolean(req.user),
+        logged: req.loggedUser,
       });
       return;
     } else {
@@ -367,7 +370,7 @@ exports.user_update_password = [
         title: "User Profile",
         errors: errors.array(),
         user: req.user,
-        logged: Boolean(req.user),
+        logged: req.loggedUser,
       });
       return;
     } else {
@@ -406,7 +409,7 @@ exports.user_add_admin = [
         title: "User Profile",
         errors: errors.array(),
         user: req.user,
-        logged: Boolean(req.user),
+        logged: req.loggedUser,
       });
       return;
     } else {
@@ -415,7 +418,7 @@ exports.user_add_admin = [
       const user = await User.findById(req.params.id).exec();
 
       user.admin = admin;
-      user.membership_status = admin;
+      if (!user.membership_status) user.membership_status = admin;
 
       await user.save();
 
