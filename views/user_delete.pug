@@ -1,0 +1,13 @@
+extends layout 
+
+block content 
+  div.container 
+    h1.h1 Do you want to delete user: (#{user.nickname})?
+    p This will cause to remove all user messages. 
+    form(method="POST")
+    
+      input#userid.form-control(type='hidden', name='userid', value=user._id )
+           
+      div.form-group-delete
+        button.nav-link.form-button(type="submit") Yes 
+        a.nav-link(href=previousPathname) No 
