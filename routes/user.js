@@ -7,6 +7,8 @@ require("dotenv").config();
 
 router.get("/:id/profile/delete", user_contorller.user_delete_get);
 
+router.post("/:id/profile/delete", user_contorller.user_delete_post);
+
 router.get("/:id/profile", user_contorller.user_profile_get);
 
 router.post("/:id/profile/names", user_contorller.user_update_names);

@@ -12,10 +12,6 @@ require("dotenv").config();
 
 // display index home
 exports.index_get = asyncHandler(async (req, res, next) => {
-  // const logged = Boolean(req.user);
-
-  // console.log(req.logged);
-
   if (req.user) {
     res.redirect(req.user.url);
   } else {
@@ -33,10 +29,6 @@ exports.index_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.user_index = asyncHandler(async (req, res, next) => {
-  // const logged = Boolean(req.user);
-
-  // console.log(req.logged);
-
   if (!req.user) {
     res.redirect("/");
   } else {
@@ -215,8 +207,6 @@ exports.logout_get = (req, res, next) => {
 };
 
 exports.user_memberclub_get = (req, res, next) => {
-  // const logged = Boolean(req.user);
-
   if (!req.user) {
     res.redirect("/");
     return;
@@ -274,8 +264,6 @@ exports.user_memberclub_post = [
 ];
 
 exports.user_profile_get = asyncHandler(async (req, res, next) => {
-  // const logged = Boolean(req.user);
-
   res.render("profile", {
     title: "User Profile",
     user: req.user,
@@ -436,5 +424,18 @@ exports.user_delete_get = asyncHandler(async (req, res, next) => {
     user: req.user,
     logged: req.loggedUser,
     previousPathname: url.pathname,
+  });
+});
+
+exports.user_delete_post = asyncHandler(async (req, res, next) => {
+  req.logout(async (err) => {
+    if (err) return next(err);
+
+    await Promise.all([
+      User.deleteOne({ _id: req.params.id }),
+      Message.deleteMany({ user: req.params.id }),
+    ]);
+
+    res.redirect("/");
   });
 });
